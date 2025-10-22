@@ -164,7 +164,9 @@ def run(source_root: str,
         return 0
 
     _log(f"=== Organize StaticMeshes: {len(ads)} found ===")
-    move_plan: List[Tuple[str, str]] = []
+    staticmesh_move_plan: List[Tuple[str, str]] = []
+    materials_move_plan: List[Tuple[str, str]] = []
+    textures_move_plan: List[Tuple[str, str]] = []
 
     # 계획 생성
     for ad in ads:
@@ -187,30 +189,26 @@ def run(source_root: str,
             _ensure_dir(p)
 
         # StaticMesh
-        move_plan.append((sm.get_path_name(), dst_meshes))
+        staticmesh_move_plan.append((sm.get_path_name(), dst_meshes))
 
         # Materials & Textures
         for mi in staticmesh_materials(sm):
-            move_plan.append((mi.get_path_name(), dst_mats))
+            materials_move_plan.append((mi.get_path_name(), dst_mats))
             for tex in collect_textures(mi):
                 _log(f"textures {tex.get_path_name()}")
-                move_plan.append((tex.get_path_name(), dst_texs))
-
-    # 중복 제거
-    move_plan = list({(src, dst) for (src, dst) in move_plan})
-
-    _log("---- Move Plan ----")
-    for src, dst in move_plan:
-        ad = unreal.EditorAssetLibrary.find_asset_data(src)
-        _log(f"{src}  ->  {dst}/{ad.asset_name if ad else '??'}")
-
-    if dry_run:
-        _log("DRY_RUN=True → no changes applied.")
-        return len(move_plan)
+                textures_move_plan.append((tex.get_path_name(), dst_texs))
 
     # 실제 이동
     moved = 0
-    for src, dst in move_plan:
+    for src, dst in textures_move_plan:
+        if _move_asset(src, dst):
+            moved += 1
+
+    for src, dst in materials_move_plan:
+        if _move_asset(src, dst):
+            moved += 1
+
+    for src, dst in staticmesh_move_plan:
         if _move_asset(src, dst):
             moved += 1
 
