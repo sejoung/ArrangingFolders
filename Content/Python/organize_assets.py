@@ -121,7 +121,7 @@ def collect_textures(mi_or_mat: unreal.MaterialInterface) -> Set[unreal.Texture]
         try:
             parent = mi_or_mat.get_editor_property("parent")
             if parent:
-                out |= _textures_from_material_safe(parent)
+                out |= collect_textures(parent)
         except Exception:
             pass
     return out
@@ -142,12 +142,10 @@ def staticmesh_materials(sm: unreal.StaticMesh) -> List[unreal.MaterialInterface
 # 공개 API
 def run(source_root: str,
         dest_root: str,
-        dry_run: bool = True,
         per_mesh_subfolder: bool = True) -> int:
     """
     source_root: '/Game/...'
     dest_root  : '/Game/...'
-    dry_run    : True면 이동하지 않고 계획만 출력
     per_mesh_subfolder: True면 DEST/<SM_Name>/Meshes|Materials|Textures 로 정리
     Return: 이동(또는 계획)된 항목 수(대략치)
     """
