@@ -20,10 +20,26 @@ def _run():
     src = _get_selected_content_path()
     unreal.log(f"[OrganizeAssetsPy] src={src}  per_mesh={DEFAULT_PER_MESH}")
 
-    organize_assets.run(
-        source_root=src,
-        per_mesh_subfolder=DEFAULT_PER_MESH
+    if not _confirm(src):
+        unreal.log("사용자가 취소했습니다.")
+    else:
+        organize_assets.run(
+            source_root=src,
+            per_mesh_subfolder=DEFAULT_PER_MESH
+        )
+
+
+def _confirm(path: str) -> bool:
+    message = f"{path} 이 경로를 수정 합니다.\n 이 동작은 되돌릴 수 없습니다. 계속할까요?"
+    title_message = "정말 실행하시겠어요?"
+
+    result = unreal.EditorDialog.show_message(
+        title=title_message,
+        message=message,
+        message_type=unreal.AppMsgType.YES_NO,  # 버튼 구성
+        default_value=unreal.AppReturnType.NO  # 기본 선택
     )
+    return result == unreal.AppReturnType.YES
 
 
 def register_menus():
