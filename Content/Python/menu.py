@@ -2,13 +2,18 @@
 import unreal
 
 import organize_assets
+from utils import _log
 
-DEFAULT_DEST_ROOT = "/Game/Organized"  # 목적지 기본값
 DEFAULT_PER_MESH = False  # 메시별 하위 폴더 생성 여부
 
 
 def _get_selected_content_path() -> str:
-    return "/Game/test"
+    selected_path = unreal.EditorUtilityLibrary.get_current_content_browser_path()
+    if selected_path:
+        _log(f"selected content path: {selected_path}")
+        return str(selected_path)
+    else:
+        raise Exception("NOT FOUND PATH")
 
 
 def _run():
