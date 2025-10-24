@@ -76,3 +76,4 @@ DerivedDataCache/*
 .DS_Store
 .idea/
 Content/Python/__pycache__
+Dist/
