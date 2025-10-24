@@ -69,3 +69,14 @@ Edit → Plugins → Installed → Engine 탭에서 플러그인을 확인할 �
 * 프로젝트 내부에 포함되므로 Git 등 버전 관리에 용이합니다.
 * 관리자 권한이 필요하지 않습니다.
 * 개발 중 잦은 수정 및 테스트에 유리합니다.
+
+아래 코드는 부모를 재귀하는 로직인데 이 부분은 마스터 머터리얼을 공통으로 관리하기 위해 삭제 처리
+```
+    # 부모 따라 올라가며 한번 더 시도
+    try:
+        parent = mi_or_mat.get_editor_property("parent")
+        if parent:
+            out |= _collect_textures(parent)
+    except Exception:
+        pass
+```
