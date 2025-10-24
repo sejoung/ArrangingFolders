@@ -127,13 +127,6 @@ def _collect_textures(mi_or_mat: unreal.MaterialInterface) -> Set[unreal.Texture
                     out.add(tp.parameter_value)
         except Exception:
             pass
-        # 부모 따라 올라가며 한번 더 시도
-        try:
-            parent = mi_or_mat.get_editor_property("parent")
-            if parent:
-                out |= _collect_textures(parent)
-        except Exception:
-            pass
     return out
 
 
