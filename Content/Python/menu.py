@@ -30,8 +30,8 @@ def _run():
 
 
 def _confirm(path: str) -> bool:
-    message = f"{path} 이 경로를 수정 합니다.\n 이 동작은 되돌릴 수 없습니다. 계속할까요?"
-    title_message = "정말 실행하시겠어요?"
+    message = f"{path} will be modified.\nThis action cannot be undone. Do you want to continue?"
+    title_message = "Are you sure you want to proceed?"
 
     result = unreal.EditorDialog.show_message(
         title=title_message,
