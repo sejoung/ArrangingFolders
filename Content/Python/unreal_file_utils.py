@@ -1,7 +1,6 @@
 from typing import Set, List, Optional
 
 import unreal
-from unreal import AssetData
 
 from utils import _warn
 
@@ -9,6 +8,13 @@ from utils import _warn
 def _pkg_join(*parts: str) -> str:
     p = "/".join(x.strip("/") for x in parts if x)
     return p if p.startswith("/") else "/" + p
+
+
+def is_engine(path: str) -> bool:
+    unreal.log(f"is_engine {path}")
+    if not path.startswith("/Engine"):
+        return False
+    return True
 
 
 def _ensure_dir(path: str):
@@ -46,7 +52,7 @@ def _unique_name_in(dst_pkg_path: str, desired_name: str) -> str:
         name = f"{desired_name}_{i:03d}"
 
 
-def _get_asset_name(ad: AssetData) -> str:
+def _get_asset_name(ad: unreal.AssetData) -> str:
     uobj = ad.get_asset()
 
     if isinstance(uobj, unreal.Material):
@@ -71,11 +77,11 @@ def _get_asset_name(ad: AssetData) -> str:
 
 def _move_asset(obj_path: str, dst_pkg_path: str) -> Optional[str]:
     ad = unreal.EditorAssetLibrary.find_asset_data(obj_path)
-    if not ad:
+    if not ad or is_engine(obj_path):
         _warn(f"[Skip] Not found: {obj_path}")
         return None
+
     new_obj_path = _unique_move_path(dst_pkg_path, str(ad.asset_name))
-    ad = unreal.EditorAssetLibrary.find_asset_data(obj_path)
     new_asset_name = _get_asset_name(ad)
 
     new_name = _unique_name_in(dst_pkg_path, new_asset_name)
@@ -94,18 +100,6 @@ def _move_asset(obj_path: str, dst_pkg_path: str) -> Optional[str]:
         _warn(f"[Move Failed] {obj_path} -> {new_obj_path}")
         return None
     return new_obj_path
-
-
-# 텍스처 수집 (머티리얼/MI 모두 지원)
-_TextureExpr = (
-    unreal.MaterialExpressionTextureSample,
-    unreal.MaterialExpressionTextureSampleParameter,
-    unreal.MaterialExpressionTextureSampleParameter2D,
-    unreal.MaterialExpressionTextureSampleParameterCube,
-    unreal.MaterialExpressionTextureSampleParameterSubUV,
-    unreal.MaterialExpressionTextureObject,
-    unreal.MaterialExpressionTextureObjectParameter
-)
 
 
 def _collect_textures(mi_or_mat: unreal.MaterialInterface) -> Set[unreal.Texture]:
