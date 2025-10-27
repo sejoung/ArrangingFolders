@@ -1,5 +1,7 @@
 # ArrangingFolders
 
+![ㅁㅁㅁ](https://github.com/sejoung/ArrangingFolders/releases/download/1.0/af.gif)
+
 ## Engine-Level Plugin Setup
 
 ### 엔진 레벨 플러그인 설정
