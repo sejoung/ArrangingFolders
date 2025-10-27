@@ -1,11 +1,4 @@
 # ArrangingFolders
-<video src="https://github.com/sejoung/ArrangingFolders/releases/download/1.0/af_2x.mp4"
-       controls
-       width="640"
-       playsinline
-       muted>
-  브라우저가 video 태그를 지원하지 않습니다.
-</video>
 
 ## Engine-Level Plugin Setup
 
