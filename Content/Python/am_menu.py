@@ -1,4 +1,4 @@
-# Scripts/OrganizeAssetsPy/menu.py
+# Scripts/OrganizeAssetsPy/am_menu.py
 import unreal
 
 import organize_assets
@@ -48,18 +48,17 @@ def register_menus():
     # 2) Content Browser 폴더 우클릭 메뉴
     cb_menu = menus.extend_menu("ContentBrowser.FolderContextMenu")
     section_name = "ArrangingFolder"
-    cb_menu.add_section(section_name, "Organize Assets (Python)")
+    cb_menu.add_section(section_name, "Organize Assets")
 
     e3 = unreal.ToolMenuEntry(
-        name="ArrangingFolder.CB.Run",
+        name="ArrangingFolder",
         type=unreal.MultiBlockType.MENU_ENTRY
     )
     e3.set_label("Arranging Folder")
     e3.set_string_command(
         type=unreal.ToolMenuStringCommandType.PYTHON,
         custom_type="",
-        string="import menu as M; M._run()"
+        string="import am_menu as M; M._run()"
     )
     cb_menu.add_menu_entry(section_name, e3)
 
-    menus.refresh_all_widgets()
