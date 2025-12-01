@@ -1,4 +1,4 @@
-# Scripts/OrganizeAssetsPy/am_menu.py
+# Scripts/OrganizeAssetsPy/af_menu.py
 import unreal
 
 import organize_assets
@@ -58,7 +58,7 @@ def register_menus():
     e3.set_string_command(
         type=unreal.ToolMenuStringCommandType.PYTHON,
         custom_type="",
-        string="import am_menu as M; M._run()"
+        string="import af_menu as M; M._run()"
     )
     cb_menu.add_menu_entry(section_name, e3)
 

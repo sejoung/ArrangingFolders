@@ -1,6 +1,6 @@
 import unreal
 
-from am_menu import register_menus
+from af_menu import register_menus
 
 
 def _startup():
