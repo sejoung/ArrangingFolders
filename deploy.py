@@ -6,8 +6,10 @@ from datetime import datetime
 from logging import error
 
 EXCLUDE_DIRS = {"Binaries", "Intermediate", "Saved", ".git", ".vs", "__pycache__", ".idea", "venv", "Dist", "deploy.py",
-                "LICENSE", "README.md", "requirements.txt", ".gitignore"}
+                "LICENSE", "README.md", "requirements.txt", ".gitignore","CLAUDE.md"}
 EXCLUDE_EXTS = {".pdb", ".obj", ".exp", ".idb", ".log"}
+
+PLUGIN_NAME = "AutoOverViewMeshes"
 
 
 def _project_dir() -> str:
@@ -21,7 +23,7 @@ def _plugin_root_from_this_file() -> str:
 
 
 def _read_uplugin(plugin_root: str) -> dict:
-    uplugin_path = os.path.join(plugin_root, os.path.basename(plugin_root) + ".uplugin")
+    uplugin_path = os.path.join(plugin_root, PLUGIN_NAME + ".uplugin")
     with open(uplugin_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
